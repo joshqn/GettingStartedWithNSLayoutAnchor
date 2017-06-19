@@ -9,6 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
+  
+  // Variable we'll use to hold the constraints we'd like to activate
+  var activeConstraints:[NSLayoutConstraint] = []
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -22,36 +25,55 @@ class ViewController: UIViewController {
     // [4]
     self.view.addSubview(myView)
     
+    /*
     // NSLayoutConstraint Array with the constraints for myView
-//    let viewConstraints = [
-//      NSLayoutConstraint(item: myView, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0),
-//      NSLayoutConstraint(item: myView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leadingMargin, multiplier: 1.0, constant: 0),
-//      NSLayoutConstraint(item: myView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailingMargin, multiplier: 1.0, constant: 0),
-//      NSLayoutConstraint(item: myView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 100)
-//    ]
+    let viewConstraints = [
+      NSLayoutConstraint(item: myView, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0),
+      NSLayoutConstraint(item: myView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leadingMargin, multiplier: 1.0, constant: 0),
+      NSLayoutConstraint(item: myView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailingMargin, multiplier: 1.0, constant: 0),
+      NSLayoutConstraint(item: myView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 100)
+    ]
+    
     
     // Activating constraints inside of viewConstraints
-    // NSLayoutConstraint.activate(viewConstraints)
+     NSLayoutConstraint.activate(viewConstraints)
+ 
+    */
+ 
+    // Create a constant to represent our superView's layoutMarginsGuide
+    let margins = self.view.layoutMarginsGuide
     
-    
-    // [1]
-    // View.ViewsAnchor.HowToConstrainTheAnchor(equalTo: WhatToConstraintTo).isActive = true
-    // myView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
-    // myView.leadingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.leadingAnchor).isActive = true
-    // myView.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor).isActive = true
-    // [2]
-    // myView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-
-    
-    
-    let anchors = [
+    // Anchors myView to the Top of the superView
+    let AnchorTop = [
       myView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor),
-      myView.leadingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.leadingAnchor),
-      myView.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor),
+      myView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+      myView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
       myView.heightAnchor.constraint(equalToConstant: 100)
     ]
     
-    anchors.forEach { $0.isActive = true }
+    // Centers myView in the superView
+    let AnchorCenter = [
+      myView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+      myView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+      myView.heightAnchor.constraint(equalToConstant: 100),
+      myView.widthAnchor.constraint(equalToConstant: 100)
+    ]
+    
+    // Anchors myView to the bottom of the superView
+    let AnchorBottom = [
+      // Anchor with a -20 constant
+      myView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor, constant: -20),
+      myView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+      myView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+      myView.heightAnchor.constraint(equalToConstant: 100)
+    ]
+    
+    // Set the constraints you'd like to active here
+    activeConstraints = AnchorBottom
+    
+    activeConstraints.forEach { (constraint) in
+      constraint.isActive = true
+    }
     
     
     
